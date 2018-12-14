@@ -20,11 +20,14 @@ void fillScreen(Winsize winSize) {
 
 // size is the relative size in % to the window
 // relativeVertOffset is the relative vertical offset in % (i.e. the "number of %" between the top of the screen and the beginning of the box
-void drawTextBox(Vect size, int relativeVertOffset, Winsize winSize) {
+Vect *drawTextBox(Vect size, int relativeVertOffset, Winsize winSize) { // Return box writable size 
 	int i,j;
+
 	int yOrigin = round(((double)relativeVertOffset/100)*winSize.ws_row);
 	int yMax = round((((double)size.y)/100)*(double)winSize.ws_row); // yMax relative to the yOrigin
 	double sideMargin = (((100-(double)size.x)/100)*winSize.ws_col)/2; // Number of col on each side of the box
+	
+	Vect *textBoxSize = malloc(sizeof(Vect));
 
 	// Skipping the un-needed height
 	for(i = 1 ; i < yOrigin ; i++);
@@ -58,6 +61,10 @@ void drawTextBox(Vect size, int relativeVertOffset, Winsize winSize) {
 		fputs(" ",stdout);
 		resetColors();
 	}
+
+	textBoxSize->x = winSize.ws_col - 2*sideMargin;
+	textBoxSize->y = (int)fminf((float)yMax,(float)(winSize.ws_row - yOrigin)) - 2; // Get rid of top and bottom lines
+	return textBoxSize;	
 }
 
 void drawCommands(char *commands, Winsize winSize) { 
@@ -77,10 +84,6 @@ void drawCommands(char *commands, Winsize winSize) {
 	resetColors();
 }
 
-void initScreen() {
-
-}
-
-void refreshScreen() {
+void refreshScreen(int mode) { // Mode 1 is morse to latin, mode 2 is latin to morse
 
 }

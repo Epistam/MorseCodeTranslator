@@ -4,23 +4,27 @@
 #include <string.h>
 #include <termios.h> // Terminal attributes
 #include <unistd.h> // For STDIN_FILENO
-#include <sys/ioctl.h> // For term interaction / sending flags to it 
+#include <sys/ioctl.h> // For term interaction / sending flags to it
+#include <ctype.h> // For iscntrl
 #include "include/term.h"
 #include "include/ui.h"
 
 int main(void) {
 
+	// Initialize screen
 	Winsize ws = (Winsize)getTermSize();
 	initTerm();
-
 	termClear();
 
-	Vect *size = malloc(sizeof(Vect));
-	size->x = 50;
-	size->y = 30;
+	// Set text boxes size
+	Vect *boxRelSize = malloc(sizeof(Vect));
+	boxRelSize->x = WINDOW_XSIZE;
+	boxRelSize->y = WINDOW_YSIZE;
 
+	// Initial screen drawings TODO use routine for that
 	fillScreen(ws);
-	drawTextBox(*size, 0, ws);
+	Vect *box1TextSize = drawTextBox(*boxRelSize, WINDOW1_YPOS, ws);  // write as long as both aren't full
+	Vect *box2TextSize = drawTextBox(*boxRelSize, WINDOW2_YPOS, ws); 
 	drawCommands(COMMANDS_TEXT, ws);
 
 	// Cursor var + replace cursor 	
