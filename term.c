@@ -17,7 +17,6 @@ void termClear() {printf("\033[2J");} // move to (0,0) too
 
 void updateTermSize(Winsize *ws) {
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, ws);
-	printf("%d",ws->ws_col);
 }
 
 void initTerm() {

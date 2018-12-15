@@ -1,18 +1,28 @@
 #ifndef UI_H
 #define UI_H
 
-// Commands related constants
-#define COMMANDS_COLOR_BG 15
-#define COMMANDS_COLOR 0
 #define COMMANDS_TEXT " Ctrl+T : Translate the text currently in the top window ; Ctrl+S : Switch translation mode ; Ctrl+Q : Leave the translator"
 
-// Textboxes related constants
-#define TEXTBOX_COLOR_OUTSIDE 239
+/*********************
+ * Graphical "style" *
+ *********************/
+#define BG_COLOR 234
+
+#define COMMANDS_COLOR_BG 15
+#define COMMANDS_COLOR 0
+
+#define TEXTBOX_COLOR_TITLE 239
+#define TEXTBOX_COLOR_TITLEBG 239
+#define TEXTBOX_COLOR_FRAME 239
 #define TEXTBOX_COLOR_INSIDE 247
+
+/************************
+ * Windows positionning *
+ ************************/
 #define WINDOW_XSIZE 90
 #define WINDOW_YSIZE 40
 #define WINDOW1_YPOS 5
-#define WINDOW2_YPOS 45
+#define WINDOW2_YPOS 48
 
 typedef struct {
 	int x;

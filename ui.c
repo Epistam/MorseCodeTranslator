@@ -10,10 +10,9 @@
 
 void fillScreen(Winsize winSize) {
 	int i,j;
-	printf("%d",winSize.ws_col);
-/*	setBgColor(TEXTBOX_COLOR_OUTSIDE);
+	setBgColor(BG_COLOR);
 	for(i = 0 ; i < winSize.ws_row ; i++) for(j = 0 ; j < winSize.ws_col ; j++) fputs(" ",stdout);
-	resetColors();*/
+	resetColors();
 }
 
 void drawCommands(char *commands, Winsize winSize) { 
@@ -37,45 +36,50 @@ Vect *drawTextBox(Vect size, int relativeVertOffset, Winsize winSize) {
 	int i,j;
 
 	int yOrigin = round(((double)relativeVertOffset/100)*winSize.ws_row);
+	int xSize = round(winSize.ws_col*((double)size.x/100)) + 4; // +4 accounts for frames
 	int yMax = round((((double)size.y)/100)*(double)winSize.ws_row); // yMax relative to the yOrigin
 	double sideMargin = (((100-(double)size.x)/100)*winSize.ws_col)/2; // Number of col on each side of the box
 	
 	Vect *textBoxSize = malloc(sizeof(Vect));
 
-	// Skipping the un-needed height
-	for(i = 1 ; i < yOrigin ; i++);
-	termGoto(1,yOrigin);
+	// Skipping the un-needed height + left margin
+	termGoto(sideMargin,yOrigin);
 
-	// Print blank line in BG color on top of the box
-	setBgColor(TEXTBOX_COLOR_OUTSIDE);
-	for(j = 1 ; j < winSize.ws_col + 1; j++) fputs(" ",stdout);
+	// Top frame (+ title ? TODO)
+	setBgColor(TEXTBOX_COLOR_FRAME);
+	for(j = 1 ; j < xSize ; j++) fputs(" ",stdout); 
 
+	// Box body
 	termGoto(0,yOrigin+1);
 	for(i = yOrigin+1 ; (i < yOrigin + yMax - 1 && i < winSize.ws_row - 1) ; i++) { // Until end of box size or end of window -1 cuz last line will be blank
-		// Left margin
-		setBgColor(TEXTBOX_COLOR_OUTSIDE);
-		for(j = 0 ; j < sideMargin ; j++) fputs(" ",stdout);
-
+		// Left margin skip
+		j = sideMargin;
+		// Left frame
+		termGoto(sideMargin,i); // Goto left frame
+		setBgColor(TEXTBOX_COLOR_FRAME);
+		fputs(" ",stdout);
+		fputs(" ",stdout);
 		// Middle box
-		setBgColor(TEXTBOX_COLOR_INSIDE);
-		for(; j < winSize.ws_col - sideMargin ; j++) fputs(" ",stdout);
-		
-		// Right margin
-		setBgColor(TEXTBOX_COLOR_OUTSIDE);
-		for(; j < winSize.ws_col ; j++) fputs(" ",stdout);
+		setBgColor(TEXTBOX_COLOR_INSIDE); // Box content
+		for(; j < winSize.ws_col - sideMargin - 2 ; j++) fputs(" ",stdout); // -2 accounts for the yet to be displayed margin
+		// Right frame
+		setBgColor(TEXTBOX_COLOR_FRAME); // Goto right frame
+		fputs(" ",stdout);
+		fputs(" ",stdout);
 	}
 	
-	// Print blank line in BG color at bottom of the box
-	termGoto(0,(int)fminf((float)winSize.ws_row,(float)(yMax+yOrigin-1)));
-	for(j = 0 ; j < winSize.ws_col ; j++) {
-		// Set background color
-		setBgColor(TEXTBOX_COLOR_OUTSIDE);
-		fputs(" ",stdout);
-		resetColors();
-	}
+	// Bottom frame
+	termGoto(sideMargin,(int)fminf((float)winSize.ws_row,(float)(yMax+yOrigin-1))); // Skip right margin
+	setBgColor(TEXTBOX_COLOR_FRAME); // Set background color
+	for(j = 1 ; j < xSize ; j++) fputs(" ",stdout); // Draw bottom frame
 
+	// Reset colors for subsequent operations
+	resetColors();
+
+	// Return text box size in characters
 	textBoxSize->x = winSize.ws_col - 2*sideMargin;
 	textBoxSize->y = (int)fminf((float)yMax,(float)(winSize.ws_row - yOrigin)) - 2; // Get rid of top and bottom lines
+
 	return textBoxSize;	
 }
 
