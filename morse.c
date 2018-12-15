@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "include/term.h"
 #include "include/ui.h"
 
 typedef struct {

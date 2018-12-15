@@ -12,16 +12,12 @@ struct termios orig_termios;
  * Terminal function / routines *
  ********************************/
 
-// Save original termios configuration
-struct termios orig_termios;
-
 // Whole terminal / screen routines
 void termClear() {printf("\033[2J");} // move to (0,0) too
 
-struct winsize getTermSize() {
-	struct winsize w;
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-	return w;
+void updateTermSize(Winsize *ws) {
+	ioctl(STDOUT_FILENO, TIOCGWINSZ, ws);
+	printf("%d",ws->ws_col);
 }
 
 void initTerm() {

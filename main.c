@@ -9,37 +9,37 @@
 #include "include/term.h"
 #include "include/ui.h"
 
+// TODO add program status indicators etc
+// TODO add title to each window
+// TODO add procedure to delete everything in a box
+// TODO LP : make more complete specs for UI functions and fix edge behaviors
+// TODO LP : make containers definition better and more organized (subcontainers and such)
+
 int main(void) {
 
 	// Initialize screen
-	Winsize ws = (Winsize)getTermSize();
-	initTerm();
-	termClear();
-
-	// Set text boxes size
-	Vect *boxRelSize = malloc(sizeof(Vect));
-	boxRelSize->x = WINDOW_XSIZE;
-	boxRelSize->y = WINDOW_YSIZE;
-
-	// Initial screen drawings TODO use routine for that
-	fillScreen(ws);
-	Vect *box1TextSize = drawTextBox(*boxRelSize, WINDOW1_YPOS, ws);  // write as long as both aren't full
-	Vect *box2TextSize = drawTextBox(*boxRelSize, WINDOW2_YPOS, ws); 
-	drawCommands(COMMANDS_TEXT, ws);
+	Winsize ws; // Global window size (may change if the user resizes the window during execution)
+	updateTermSize(&ws);
+	
+	// Initialize text boxes
+	Vect *boxRelSize = getBoxRelSize(NULL); // Relative default textbox size
+	
+	// Display the basic UI layout
+	initUI(ws, *boxRelSize);
 
 	// Cursor var + replace cursor 	
 
 	// Main loop
-	char c;
-	int running = 1;
-	while(running) {
+//	char c;
+//	int running = 1;
+//	while(running) {
 		// Main character acquisition loop
-		while (read(STDIN_FILENO, &c, 1) == 1 && c != 'q' && c != 't' && c != 's') {
-			if (!iscntrl(c)) {
-			} else {
-				// Escape sequence
-			}
-		}
+//		while(read(STDIN_FILENO, &c, 1) == 1 && c != 'q' && c != 't' && c != 's') {
+//			if (!iscntrl(c)) {
+//			} else {
+//				// Escape sequence
+//			}
+//		}
 		// Escape processing
 		/*switch(c) {
 			case 'q': // Leave
@@ -52,7 +52,7 @@ int main(void) {
 
 				break;
 		}*/
-	}
+//	}
 
 	return EXIT_SUCCESS;
 }

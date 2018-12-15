@@ -9,7 +9,7 @@ typedef struct winsize Winsize;
 
 // Whole terminal / screen routines
 void termClear();
-struct winsize getTermSize();
+void updateTermSize(Winsize *ws);
 void initTerm();
 void resetTerm();
 
