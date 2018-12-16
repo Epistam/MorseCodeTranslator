@@ -7,4 +7,7 @@ typedef struct {
 	int boxCursor; // Current cursor position
 } textBox;
 
+// Create a box
+textBox *initBox(Vect boxTextSize);
+
 #endif

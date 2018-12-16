@@ -8,7 +8,9 @@
 #include <ctype.h> // For iscntrl
 #include "include/term.h"
 #include "include/ui.h"
+#include "include/morse.h"
 
+// TODO : write as long as both aren't full
 // TODO : disclaimer : déparateurs and all
 // TODO add program status indicators etc
 // TODO add title to each window
@@ -27,7 +29,19 @@ int main(void) {
 	Vect *boxRelSize = getBoxRelSize(NULL); // Relative default textbox size
 	
 	// Display the basic UI layout
-	initUI(ws, *boxRelSize);
+	initUI(ws);
+
+
+	// Drawing boxes and getting boxes size
+	Vect *boxLatTextSize = drawTextBox(*boxRelSize, WINDOW1_YPOS, ws,TEXTBOX_TITLE_LATIN); 
+	Vect *boxMorTextSize = drawTextBox(*boxRelSize, WINDOW2_YPOS, ws,TEXTBOX_TITLE_MORSE); 
+
+	// Initializing textboxes as an abstract object (note : there is a distinct difference between UI boxes and "morse.h" boxes, 
+	// the latter only containing the boxes CONTENTS which will be processed later on during morse translation)
+	textBox *latBox = initBox(*boxLatTextSize); 
+	textBox *morBox = initBox(*boxMorTextSize); 
+
+	//printf("%d",morBox->boxStrSize);
 
 	// Cursor var + replace cursor 	
 

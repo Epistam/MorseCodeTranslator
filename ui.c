@@ -97,7 +97,7 @@ Vect *getBoxRelSize(Vect *boxRelSize) {
 	return boxRelSize;
 }
 
-void initUI(Winsize ws, Vect boxRelSize) {
+void initUI(Winsize ws) {
 
 	// Terminal preparation
 	initTerm();
@@ -105,8 +105,6 @@ void initUI(Winsize ws, Vect boxRelSize) {
 
 	// Screen initial setup
 	fillScreen(ws);
-	Vect *box1TextSize = drawTextBox(boxRelSize, WINDOW1_YPOS, ws,TEXTBOX_TITLE_LATIN);  // write as long as both aren't full
-	Vect *box2TextSize = drawTextBox(boxRelSize, WINDOW2_YPOS, ws,TEXTBOX_TITLE_MORSE); 
 	drawCommands(COMMANDS_TEXT, ws);
 
 }

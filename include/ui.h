@@ -59,7 +59,7 @@ Vect *drawTextBox(Vect size, int relativeVertOffset, Winsize winSize, char *boxT
 // Get box relative size to window (initializes if not existing already)
 Vect *getBoxRelSize(Vect *boxRelSize);
 // Initialize UI
-void initUI(Winsize ws, Vect boxRelSize);
+void initUI(Winsize ws);
 // Update and redraw the whole screen to current terminal size
 void updateScreen();
 // Update UI, displays boxes and their titles in the correct configuration, deletes all text currently written
