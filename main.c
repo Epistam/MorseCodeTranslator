@@ -24,7 +24,8 @@ int main(void) {
 
 	int mode = 0;
 	Vect uiCursor; // TODO init
-
+	
+	int k;
 
 	// Initialize screen
 	Winsize ws; // Global window size (may change if the user resizes the window during execution)
@@ -63,10 +64,11 @@ int main(void) {
 					appendBox(mode ? morBox : latBox, c);
 					break;
 				case 20 :
-					// Translate
+					// Translate TODO erase lower box to avoid translations piling up on top of each otehr
+					//for(k = 0 ; k < mode ? morBox->boxStrSize : latBox->boxStrSize ; k++) mode ? (morBox->boxStr[k] = '\0') : (latBox->boxStr[k] = '\0');
 					mode ? mor2Lat(morBox,latBox) : lat2Mor(latBox,morBox);
 					gotoTB2Origin(ws);
-					printf("%s",morBox->boxStr);
+					printf("%s", mode ? latBox->boxStr : morBox->boxStr);
 					break;
 				case 19 :
 					// Switch mode

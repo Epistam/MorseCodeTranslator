@@ -19,13 +19,14 @@ textBox *initBox(Vect boxTextSize) { // Initializes a box TODO add size
 // Clear boxes when swapping mode
 void resetTextBoxes(int mode, Vect boxLatTextSize, Vect boxMorTextSize, textBox *morBox, textBox *latBox) {
 	// Reset latin text box
+	int k;
 	latBox->boxCursor = 0;
-	latBox->boxStr[0] = '\0';
+	for(k = 0 ; k < latBox->boxStrSize ; k++) latBox->boxStr[k] = '\0';
 	latBox->boxStrSize = boxLatTextSize.x*boxLatTextSize.y;
 
 	// Reset morse text box
 	morBox->boxCursor = 0;
-	morBox->boxStr[0] = '\0';
+	for(k = 0 ; k < morBox->boxStrSize ; k++) morBox->boxStr[k] = '\0';
 	morBox->boxStrSize = boxMorTextSize.x*boxMorTextSize.y;
 
 }
@@ -176,7 +177,50 @@ void lat2Mor(textBox *latBox, textBox *morBox) {
 }
 
 void mor2Lat(textBox *morBox, textBox *latBox) {
-
+	int i;
+	//int curpos=0;
+	char *tok; 
+	char *str = strdup(morBox->boxStr);
+	for(i = 0 ; (tok = strsep(&str, " ")) != NULL ; i++) { // morse takes more space than latin so no overflwo check needed
+		if(!strcmp(tok,".-")) strcat(latBox->boxStr,"A");
+		if(!strcmp(tok,"-...")) strcat(latBox->boxStr,"B");
+		if(!strcmp(tok,"-.-.")) strcat(latBox->boxStr,"C");
+		if(!strcmp(tok,"-..")) strcat(latBox->boxStr,"D");
+		if(!strcmp(tok,".")) strcat(latBox->boxStr,"E");
+		if(!strcmp(tok,"..-.")) strcat(latBox->boxStr,"F");
+		if(!strcmp(tok,"--.")) strcat(latBox->boxStr,"G");
+		if(!strcmp(tok,"....")) strcat(latBox->boxStr,"H");
+		if(!strcmp(tok,"..")) strcat(latBox->boxStr,"I");
+		if(!strcmp(tok,".---")) strcat(latBox->boxStr,"J");
+		if(!strcmp(tok,"-.-")) strcat(latBox->boxStr,"K");
+		if(!strcmp(tok,".-..")) strcat(latBox->boxStr,"L");
+		if(!strcmp(tok,"--")) strcat(latBox->boxStr,"M");
+		if(!strcmp(tok,"-.")) strcat(latBox->boxStr,"N");
+		if(!strcmp(tok,"---")) strcat(latBox->boxStr,"O");
+		if(!strcmp(tok,".--.")) strcat(latBox->boxStr,"P");
+		if(!strcmp(tok,"--.-")) strcat(latBox->boxStr,"Q");
+		if(!strcmp(tok,".-.")) strcat(latBox->boxStr,"R");
+		if(!strcmp(tok,"...")) strcat(latBox->boxStr,"S");
+		if(!strcmp(tok,"-")) strcat(latBox->boxStr,"T");
+		if(!strcmp(tok,"..-")) strcat(latBox->boxStr,"U");
+		if(!strcmp(tok,"...-")) strcat(latBox->boxStr,"V");
+		if(!strcmp(tok,".--")) strcat(latBox->boxStr,"W");
+		if(!strcmp(tok,"-..-")) strcat(latBox->boxStr,"X");
+		if(!strcmp(tok,"-.--")) strcat(latBox->boxStr,"Y");
+		if(!strcmp(tok,"--..")) strcat(latBox->boxStr,"Z");
+		if(!strcmp(tok,"-----")) strcat(latBox->boxStr,"0");
+		if(!strcmp(tok,".----")) strcat(latBox->boxStr,"1");
+		if(!strcmp(tok,"..---")) strcat(latBox->boxStr,"2");
+		if(!strcmp(tok,"...--")) strcat(latBox->boxStr,"3");
+		if(!strcmp(tok,"....-")) strcat(latBox->boxStr,"4");
+		if(!strcmp(tok,".....")) strcat(latBox->boxStr,"5");
+		if(!strcmp(tok,"-....")) strcat(latBox->boxStr,"6");
+		if(!strcmp(tok,"--...")) strcat(latBox->boxStr,"7");
+		if(!strcmp(tok,"---..")) strcat(latBox->boxStr,"8");
+		if(!strcmp(tok,"----.")) strcat(latBox->boxStr,"9");
+		if(!strcmp(tok,"/")) strcat(latBox->boxStr," ");
+	}
+	
+// TODO : ternary autism
+//		buf = (tok[0] == '.') ? : (c=='-')
 }
-
-// Morse needs strsep
