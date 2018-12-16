@@ -10,6 +10,7 @@
 #include "include/ui.h"
 #include "include/morse.h"
 
+// TODO : manage '\0' when writing
 // TODO : write as long as both aren't full
 // TODO : disclaimer : déparateurs and all
 // TODO add program status indicators etc
@@ -20,6 +21,8 @@
 // REM : morse.h can be over and used by ui.h since graphical methods will only be called by main and ui.c
 
 int main(void) {
+
+	int mode = 0;
 
 	// Initialize screen
 	Winsize ws; // Global window size (may change if the user resizes the window during execution)
@@ -33,14 +36,15 @@ int main(void) {
 
 
 	// Drawing boxes and getting boxes size
-	Vect *boxLatTextSize = drawTextBox(*boxRelSize, WINDOW1_YPOS, ws,TEXTBOX_TITLE_LATIN); 
-	Vect *boxMorTextSize = drawTextBox(*boxRelSize, WINDOW2_YPOS, ws,TEXTBOX_TITLE_MORSE); 
+	Vect *boxLatTextSize = drawTextBox(*boxRelSize, NULL, WINDOW1_YPOS, ws,TEXTBOX_TITLE_LATIN); 
+	Vect *boxMorTextSize = drawTextBox(*boxRelSize, NULL, WINDOW2_YPOS, ws,TEXTBOX_TITLE_MORSE); 
 
 	// Initializing textboxes as an abstract object (note : there is a distinct difference between UI boxes and "morse.h" boxes, 
 	// the latter only containing the boxes CONTENTS which will be processed later on during morse translation)
 	textBox *latBox = initBox(*boxLatTextSize); 
 	textBox *morBox = initBox(*boxMorTextSize); 
-
+	
+	//updateUI(&mode, boxLatTextSize, boxMorTextSize, *boxRelSize, ws);
 	//printf("%d",morBox->boxStrSize);
 
 	// Cursor var + replace cursor 	

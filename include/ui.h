@@ -51,7 +51,7 @@ void drawCommands(char *commands, Winsize winSize);
 // Draw a textbox
 // size is the relative size of the box in % to the window
 // relativeVertOffset is the relative vertical offset in % (i.e. the "number of %" between the top of the screen and the beginning of the box
-Vect *drawTextBox(Vect size, int relativeVertOffset, Winsize winSize, char *boxTitle);
+Vect *drawTextBox(Vect size, Vect *textBoxSize, int relativeVertOffset, Winsize winSize, char *boxTitle);
 
 /***************************
  * Upper level UI routines *
@@ -60,11 +60,11 @@ Vect *drawTextBox(Vect size, int relativeVertOffset, Winsize winSize, char *boxT
 Vect *getBoxRelSize(Vect *boxRelSize);
 // Initialize UI
 void initUI(Winsize ws);
+// Swap boxes, displays boxes and their titles in the correct configuration, deletes all text currently written
+// mode 0 is Latin -> Morse, mode 1 is Morse -> Latin
+void swapUIBoxes(int *mode, Vect *boxLatTextSize, Vect *boxMorTextSize, Vect boxRelSize, Winsize ws);
 // Update and redraw the whole screen to current terminal size
 void updateScreen();
-// Update UI, displays boxes and their titles in the correct configuration, deletes all text currently written
-// mode 0 is Latin -> Morse, mode 1 is Morse -> Latin
-void updateUI(int mode);
 // Update the master textbox according to current keypresses ; commits changes accordingly to slave box using morse routines
 // Also handles special sequences to delete everything in a box
 void updateTextBoxes();

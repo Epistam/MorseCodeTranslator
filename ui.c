@@ -32,7 +32,7 @@ void drawCommands(char *commands, Winsize winSize) {
 	resetColors();
 }
 
-Vect *drawTextBox(Vect size, int relativeVertOffset, Winsize winSize, char *boxTitle) {  
+Vect *drawTextBox(Vect size, Vect *textBoxSize, int relativeVertOffset, Winsize winSize, char *boxTitle) {  
 	int i,j;
 	int titleSize = strlen(boxTitle);
 	int yOrigin = round(((double)relativeVertOffset/100)*winSize.ws_row);
@@ -40,8 +40,6 @@ Vect *drawTextBox(Vect size, int relativeVertOffset, Winsize winSize, char *boxT
 	int yMax = round((((double)size.y)/100)*(double)winSize.ws_row); // yMax relative to the yOrigin
 	double sideMargin = (((100-(double)size.x)/100)*winSize.ws_col)/2; // Number of col on each side of the box
 	
-	Vect *textBoxSize = malloc(sizeof(Vect));
-
 	// Skipping the un-needed height + left margin
 	termGoto(sideMargin,yOrigin);
 
@@ -83,6 +81,7 @@ Vect *drawTextBox(Vect size, int relativeVertOffset, Winsize winSize, char *boxT
 	// Reset colors for subsequent operations
 	resetColors();
 
+	if(textBoxSize == NULL) textBoxSize = malloc(sizeof(Vect));
 	// Return text box size in characters
 	textBoxSize->x = winSize.ws_col - 2*sideMargin;
 	textBoxSize->y = (int)fminf((float)yMax,(float)(winSize.ws_row - yOrigin)) - 2; // Get rid of top and bottom lines
@@ -109,6 +108,17 @@ void initUI(Winsize ws) {
 
 }
 
+void swapUIBoxes(int *mode, Vect *boxLatTextSize, Vect *boxMorTextSize, Vect boxRelSize, Winsize ws) {
+
+	// Swap the boxes graphicaly
+	boxLatTextSize = drawTextBox(boxRelSize, boxLatTextSize, mode ? WINDOW2_YPOS : WINDOW1_YPOS, ws,TEXTBOX_TITLE_LATIN);
+	boxMorTextSize = drawTextBox(boxRelSize, boxMorTextSize, mode ? WINDOW1_YPOS : WINDOW2_YPOS, ws,TEXTBOX_TITLE_MORSE);
+
+	// Swap mode
+	*mode = *mode ? 0 : 1;
+
+}
+
 void updateScreen();
-void updateUI(int mode);
+
 void updateTextBoxes();

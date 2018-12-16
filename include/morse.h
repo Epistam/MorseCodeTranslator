@@ -10,4 +10,7 @@ typedef struct {
 // Create a box
 textBox *initBox(Vect boxTextSize);
 
+// Reset boxes when swapping mode
+void resetTextBoxes(int mode, Vect boxLatTextSize, Vect boxMorTextSize, textBox *morBox, textBox *latBox);
+
 #endif
