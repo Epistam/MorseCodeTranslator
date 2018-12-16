@@ -56,6 +56,7 @@ Vect *drawTextBox(Vect size, Vect *textBoxSize, int relativeVertOffset, Winsize 
 void appendUIBox(int c);
 
 void gotoTBOrigin(Winsize ws);
+void gotoTB2Origin(Winsize ws);
 
 /***************************
  * Upper level UI routines *

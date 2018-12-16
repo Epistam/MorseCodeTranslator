@@ -15,4 +15,7 @@ void resetTextBoxes(int mode, Vect boxLatTextSize, Vect boxMorTextSize, textBox 
 // Append a character to the box (deletes the previous one in case backspace is provided)
 void appendBox(textBox *tBox, char c);
 
+void lat2Mor(textBox *latBox, textBox *morBox);
+void mor2Lat(textBox *morBox, textBox *latBox);
+
 #endif

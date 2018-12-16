@@ -13,6 +13,11 @@ void gotoTBOrigin(Winsize ws) {
 	int yOrigin = ((double)WINDOW1_YPOS/100)*ws.ws_row;
 	termGoto(xOrigin+2,yOrigin+2); // Compensating from left frame and top frame + title row
 }
+void gotoTB2Origin(Winsize ws) {
+	int xOrigin = (((100-(double)WINDOW_XSIZE)/100)*ws.ws_col)/2; // Number of col on each side of the box
+	int yOrigin = ((double)WINDOW2_YPOS/100)*ws.ws_row;
+	termGoto(xOrigin+2,yOrigin+2); // Compensating from left frame and top frame + title row
+}
 
 void fillScreen(Winsize winSize) {
 	int i,j;

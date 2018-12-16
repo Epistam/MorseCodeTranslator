@@ -64,11 +64,14 @@ int main(void) {
 					break;
 				case 20 :
 					// Translate
+					mode ? mor2Lat(morBox,latBox) : lat2Mor(latBox,morBox);
+					gotoTB2Origin(ws);
+					printf("%s",morBox->boxStr);
 					break;
 				case 19 :
+					// Switch mode
 					swapUIBoxes(&mode, boxLatTextSize, boxMorTextSize, *boxRelSize, ws);
 					resetTextBoxes(mode, *boxLatTextSize, *boxMorTextSize, morBox, latBox);
-					// Switch mode
 					break;
 				case 17 :
 					running = 0;
