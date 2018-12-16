@@ -44,7 +44,7 @@ Vect *drawTextBox(Vect size, Vect *textBoxSize, int relativeVertOffset, Winsize 
 	termGoto(sideMargin,yOrigin);
 
 	// Top frame and title
-	setBgColor(TEXTBOX_COLOR_FRAME);
+	setBgColor(TEXTBOX_COLOR_TITLEBG);
 	setColor(TEXTBOX_COLOR_TITLE);
 	fputs("  ",stdout);
 	for(j = 0 ; j < xSize - 5 && j < titleSize  ; j++) printf("%c",boxTitle[j]); // Write until we reach the end of the line or the end of the string
@@ -58,7 +58,7 @@ Vect *drawTextBox(Vect size, Vect *textBoxSize, int relativeVertOffset, Winsize 
 	termGoto(0,yOrigin+1);
 	for(i = yOrigin+1 ; (i < yOrigin + yMax - 1 && i < winSize.ws_row - 1) ; i++) { // Until end of box size or end of window -1 cuz last line will be blank
 		// Left margin skip
-		j = sideMargin;
+		j = sideMargin; // ??? idk, idc tbf
 		// Left frame
 		termGoto(sideMargin,i); // Goto left frame
 		setBgColor(TEXTBOX_COLOR_FRAME);
@@ -87,6 +87,19 @@ Vect *drawTextBox(Vect size, Vect *textBoxSize, int relativeVertOffset, Winsize 
 	textBoxSize->y = (int)fminf((float)yMax,(float)(winSize.ws_row - yOrigin)) - 2; // Get rid of top and bottom lines
 
 	return textBoxSize;	
+}
+
+void appendUIBox(int c) {
+	setBgColor(TEXTBOX_COLOR_INSIDE);
+	setColor(TEXTBOX_COLOR_TEXT);
+	if(c == -1) {
+		termBack();
+		fputs(" ",stdout);
+		termBack();
+	} else { // TODO : add retour à la ligne
+		printf("%c",c);
+
+	}
 }
 
 Vect *getBoxRelSize(Vect *boxRelSize) {

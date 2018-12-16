@@ -11,10 +11,11 @@
 #define COMMANDS_COLOR_BG 15
 #define COMMANDS_COLOR 0
 
+#define TEXTBOX_COLOR_TEXT 15
 #define TEXTBOX_COLOR_TITLE 15
-#define TEXTBOX_COLOR_TITLEBG 239
-#define TEXTBOX_COLOR_FRAME 239
-#define TEXTBOX_COLOR_INSIDE 247
+#define TEXTBOX_COLOR_TITLEBG 244
+#define TEXTBOX_COLOR_FRAME 236
+#define TEXTBOX_COLOR_INSIDE 240
 
 /************************
  * Windows positionning *
@@ -52,6 +53,7 @@ void drawCommands(char *commands, Winsize winSize);
 // size is the relative size of the box in % to the window
 // relativeVertOffset is the relative vertical offset in % (i.e. the "number of %" between the top of the screen and the beginning of the box
 Vect *drawTextBox(Vect size, Vect *textBoxSize, int relativeVertOffset, Winsize winSize, char *boxTitle);
+void appendUIBox(int c);
 
 /***************************
  * Upper level UI routines *
