@@ -10,12 +10,12 @@
 #include "include/ui.h"
 #include "include/morse.h"
 
-// Morse.c update commit dans struct
-// UI update according to append : reuse current cursor et add ou delete
-// TODO : manage '\0' when writing
 // TODO : write as long as both aren't full
 // TODO : disclaimer : déparateurs and all
 // TODO add program status indicators etc
+// TODO LP : fix bug need to push twice on Ctrl Q to quit
+// TODO LP : can't switch sides more than ocne (at least titles are bugging)
+// TODO LP : fix cursor bottom of screen at beginning
 // TODO LP : make more complete specs for UI functions and fix edge behaviors
 // TODO LP : make containers definition better and more organized (subcontainers and such)
 // REM : morse.h can be over and used by ui.h since graphical methods will only be called by main and ui.c
@@ -46,31 +46,28 @@ int main(void) {
 	textBox *latBox = initBox(*boxLatTextSize); 
 	textBox *morBox = initBox(*boxMorTextSize); 
 
-	int xOrigin = (((100-(double)WINDOW_XSIZE)/100)*ws.ws_col)/2; // Number of col on each side of the box
-	int yOrigin = ((double)WINDOW1_YPOS/100)*ws.ws_row;
-	termGoto(xOrigin+2,yOrigin+2); // Compensating from left frame and top frame + title row
+	gotoTBOrigin(ws);
+	fflush(stdout); // Flush since smh cache is still tied to newlines
 
-	//updateUI(&mode, boxLatTextSize, boxMorTextSize, *boxRelSize, ws);
-	//printf("%d",morBox->boxStrSize);
-
-	// Cursor var + replace cursor 	
-
-	// Main loop/
+	// Main loop
 	char c;
 	int running = 1;
   	// Main character acquisition loop
 	while(read(STDIN_FILENO, &c, 1) == 1 && running) {
+
 		if (!iscntrl(c)) { 
-			if(isalnum(c)) appendUIBox(c);
+			appendBox(mode ? morBox : latBox, c);
 		} else { // If it is a control character
 			switch(c) {
 				case 127 : 
-					appendUIBox(-1);
+					appendBox(mode ? morBox : latBox, c);
 					break;
 				case 20 :
 					// Translate
 					break;
 				case 19 :
+					swapUIBoxes(&mode, boxLatTextSize, boxMorTextSize, *boxRelSize, ws);
+					resetTextBoxes(mode, *boxLatTextSize, *boxMorTextSize, morBox, latBox);
 					// Switch mode
 					break;
 				case 17 :

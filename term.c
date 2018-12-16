@@ -26,6 +26,8 @@ void initTerm() {
 	atexit(resetTerm);
 	// Duplicate attributes
 	struct termios raw = orig_termios;
+	// Disable Ctrl S / Ctrl Q
+	raw.c_iflag &= ~(IXON);
 	// Disable echo and canonical on the duplicate attributes
 	raw.c_lflag &= ~(ECHO | ICANON);
 	// "commit" new attributes to shell

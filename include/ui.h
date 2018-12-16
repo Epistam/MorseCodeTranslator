@@ -55,6 +55,8 @@ void drawCommands(char *commands, Winsize winSize);
 Vect *drawTextBox(Vect size, Vect *textBoxSize, int relativeVertOffset, Winsize winSize, char *boxTitle);
 void appendUIBox(int c);
 
+void gotoTBOrigin(Winsize ws);
+
 /***************************
  * Upper level UI routines *
  ***************************/

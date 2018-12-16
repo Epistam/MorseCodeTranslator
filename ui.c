@@ -8,6 +8,12 @@
 #include "include/term.h"
 #include "include/ui.h"
 
+void gotoTBOrigin(Winsize ws) {
+	int xOrigin = (((100-(double)WINDOW_XSIZE)/100)*ws.ws_col)/2; // Number of col on each side of the box
+	int yOrigin = ((double)WINDOW1_YPOS/100)*ws.ws_row;
+	termGoto(xOrigin+2,yOrigin+2); // Compensating from left frame and top frame + title row
+}
+
 void fillScreen(Winsize winSize) {
 	int i,j;
 	setBgColor(BG_COLOR);
@@ -130,6 +136,8 @@ void swapUIBoxes(int *mode, Vect *boxLatTextSize, Vect *boxMorTextSize, Vect box
 	// Swap mode
 	*mode = *mode ? 0 : 1;
 
+	// Get to new origin
+	gotoTBOrigin(ws);
 }
 
 void updateScreen();

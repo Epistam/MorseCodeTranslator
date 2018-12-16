@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "include/term.h"
 #include "include/ui.h"
 #include "include/morse.h"
@@ -28,21 +29,15 @@ void resetTextBoxes(int mode, Vect boxLatTextSize, Vect boxMorTextSize, textBox 
 }
 
 void appendBox(textBox *tBox, char c) {
-	if(c == 8) { // Backspace
+	if(c == 127) { // Backspace
 		if(tBox->boxCursor > 0) { // Check if there's something to delete
 			tBox->boxStr[tBox->boxCursor - 1] = '\0'; // Delete current char
 			tBox->boxCursor--; // Make cursor fallback
+			appendUIBox(-1);
 		}
 	} else if(tBox->boxCursor < tBox->boxStrSize - 2) { // -1 for size to index conversion, and -1 cause cursor is always on the next index
 			tBox->boxStr[tBox->boxCursor] = c;
 			tBox->boxCursor++;
+			appendUIBox(c);
 	}
 }
-
-void editBox() { // updatebox box with char and all
-
-}
-
-void clearText();
-
-//box append
