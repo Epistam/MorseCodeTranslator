@@ -9,11 +9,13 @@
 #include "include/term.h"
 #include "include/ui.h"
 
+// TODO : disclaimer : déparateurs and all
 // TODO add program status indicators etc
 // TODO add title to each window
 // TODO add procedure to delete everything in a box
 // TODO LP : make more complete specs for UI functions and fix edge behaviors
 // TODO LP : make containers definition better and more organized (subcontainers and such)
+// REM : morse.h can be over and used by ui.h since graphical methods will only be called by main and ui.c
 
 int main(void) {
 

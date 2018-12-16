@@ -32,9 +32,9 @@ void drawCommands(char *commands, Winsize winSize) {
 	resetColors();
 }
 
-Vect *drawTextBox(Vect size, int relativeVertOffset, Winsize winSize) {  
+Vect *drawTextBox(Vect size, int relativeVertOffset, Winsize winSize, char *boxTitle) {  
 	int i,j;
-
+	int titleSize = strlen(boxTitle);
 	int yOrigin = round(((double)relativeVertOffset/100)*winSize.ws_row);
 	int xSize = round(winSize.ws_col*((double)size.x/100)) + 4; // +4 accounts for frames
 	int yMax = round((((double)size.y)/100)*(double)winSize.ws_row); // yMax relative to the yOrigin
@@ -45,9 +45,16 @@ Vect *drawTextBox(Vect size, int relativeVertOffset, Winsize winSize) {
 	// Skipping the un-needed height + left margin
 	termGoto(sideMargin,yOrigin);
 
-	// Top frame (+ title ? TODO)
+	// Top frame and title
 	setBgColor(TEXTBOX_COLOR_FRAME);
-	for(j = 1 ; j < xSize ; j++) fputs(" ",stdout); 
+	setColor(TEXTBOX_COLOR_TITLE);
+	fputs("  ",stdout);
+	for(j = 0 ; j < xSize - 5 && j < titleSize  ; j++) printf("%c",boxTitle[j]); // Write until we reach the end of the line or the end of the string
+	for(; j < xSize - 3 ; j++) fputs(" ",stdout); // Complete the line if need be 
+	if(j < titleSize) { // Add ellipsis if the window is not wide enough
+		termGoto(sideMargin+j-3, yOrigin); // Go to the end of the line, go back 3 char, write ellipsis
+		fputs("...",stdout);
+	}
 
 	// Box body
 	termGoto(0,yOrigin+1);
@@ -98,8 +105,8 @@ void initUI(Winsize ws, Vect boxRelSize) {
 
 	// Screen initial setup
 	fillScreen(ws);
-	Vect *box1TextSize = drawTextBox(boxRelSize, WINDOW1_YPOS, ws);  // write as long as both aren't full
-	Vect *box2TextSize = drawTextBox(boxRelSize, WINDOW2_YPOS, ws); 
+	Vect *box1TextSize = drawTextBox(boxRelSize, WINDOW1_YPOS, ws,TEXTBOX_TITLE_LATIN);  // write as long as both aren't full
+	Vect *box2TextSize = drawTextBox(boxRelSize, WINDOW2_YPOS, ws,TEXTBOX_TITLE_MORSE); 
 	drawCommands(COMMANDS_TEXT, ws);
 
 }

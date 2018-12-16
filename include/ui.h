@@ -11,7 +11,7 @@
 #define COMMANDS_COLOR_BG 15
 #define COMMANDS_COLOR 0
 
-#define TEXTBOX_COLOR_TITLE 239
+#define TEXTBOX_COLOR_TITLE 15
 #define TEXTBOX_COLOR_TITLEBG 239
 #define TEXTBOX_COLOR_FRAME 239
 #define TEXTBOX_COLOR_INSIDE 247
@@ -24,10 +24,22 @@
 #define WINDOW1_YPOS 5
 #define WINDOW2_YPOS 48
 
+/***************
+ * Boxes names *
+ ***************/
+#define TEXTBOX_TITLE_MORSE "Morse Code :"
+#define TEXTBOX_TITLE_LATIN "Latin Alphabet :"
+
 typedef struct {
 	int x;
 	int y;
 } Vect;
+
+// TODO future refactor
+/*typedef struct { // should separate structs if you want to keep separation between morse and ui. Don't want both operating at the same time.
+	char *boxTitle; // Box... title
+	Size boxRelSize; // i.e in 
+} uiBox;*/
 
 /***********************************
  * Lower level UI drawing routines *
@@ -39,7 +51,7 @@ void drawCommands(char *commands, Winsize winSize);
 // Draw a textbox
 // size is the relative size of the box in % to the window
 // relativeVertOffset is the relative vertical offset in % (i.e. the "number of %" between the top of the screen and the beginning of the box
-Vect *drawTextBox(Vect size, int relativeVertOffset, Winsize winSize);
+Vect *drawTextBox(Vect size, int relativeVertOffset, Winsize winSize, char *boxTitle);
 
 /***************************
  * Upper level UI routines *

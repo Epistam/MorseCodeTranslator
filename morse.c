@@ -2,23 +2,18 @@
 #include <stdlib.h>
 #include "include/term.h"
 #include "include/ui.h"
+#include "include/morse.h"
 
-typedef struct {
-	char *boxText; // Box content
-	int boxSize; // String max length
-	int boxPos; // Current cursor position
-} Box;
-
-Box *initBox(Vect boxSize) { // Initializes a box TODO add size
-	Box *box = malloc(sizeof(Box));
-	box->boxText = malloc(42);
-	box->boxSize = boxSize.x*boxSize.y;
-	box->boxPos = 0;
+textBox *initBox(Vect boxSize) { // Initializes a box TODO add size
+	textBox *box = malloc(sizeof(textBox));
+	box->boxStr = malloc(boxSize.x*boxSize.y); // Allocate the number of chars in the box
+	box->boxStrSize = boxSize.x*boxSize.y;
+	box->boxCursor = 0;
 	
 	return box;
 }
 
-void editBox() {
+void editBox() { // updatebox box with char and all
 
 }
 
