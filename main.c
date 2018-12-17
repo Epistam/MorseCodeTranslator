@@ -70,8 +70,10 @@ int main(void) {
 					// Translate TODO erase lower box to avoid translations piling up on top of each otehr
 					//for(k = 0 ; k < mode ? morBox->boxStrSize : latBox->boxStrSize ; k++) mode ? (morBox->boxStr[k] = '\0') : (latBox->boxStr[k] = '\0');
 					mode ? mor2Lat(morBox,latBox) : lat2Mor(latBox,morBox);
-					gotoTB2Origin(ws);
+					termGoto((((100-(double)WINDOW_XSIZE)/100)*ws.ws_col)/2+2,((double)WINDOW2_YPOS/100)*ws.ws_row+2); // Compensating from left frame and top frame + title row
 					printf("%s", mode ? latBox->boxStr : morBox->boxStr);
+					termGoto(orig->x + uiCursor->x, orig-> y + uiCursor->y);
+					// Move cursor to previous position again
 					break;
 				case 19 :
 					// Switch mode
