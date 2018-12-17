@@ -8,10 +8,12 @@
 #include "include/term.h"
 #include "include/ui.h"
 
-void gotoTBOrigin(Winsize ws) {
-	int xOrigin = (((100-(double)WINDOW_XSIZE)/100)*ws.ws_col)/2; // Number of col on each side of the box
-	int yOrigin = ((double)WINDOW1_YPOS/100)*ws.ws_row;
-	termGoto(xOrigin+2,yOrigin+2); // Compensating from left frame and top frame + title row
+void gotoTBOrigin(Winsize ws, Vect *uiCursor, Vect *orig) {
+	orig->x = (((100-(double)WINDOW_XSIZE)/100)*ws.ws_col)/2 + 2; // Number of col on each side of the box, compensating for left fram
+	orig->y = ((double)WINDOW1_YPOS/100)*ws.ws_row + 2; // Comepnsating for tp frame and title row
+	termGoto(orig->x,orig->y); // Compensating from left frame and top frame + title row
+	uiCursor->x = 0;
+	uiCursor->y = 0;
 }
 void gotoTB2Origin(Winsize ws) {
 	int xOrigin = (((100-(double)WINDOW_XSIZE)/100)*ws.ws_col)/2; // Number of col on each side of the box
@@ -100,16 +102,26 @@ Vect *drawTextBox(Vect size, Vect *textBoxSize, int relativeVertOffset, Winsize 
 	return textBoxSize;	
 }
 
-void appendUIBox(int c) {
+void appendUIBox(int c, Vect *uiCursor, int textCursor, int boxWidth, Vect *orig) {
 	setBgColor(TEXTBOX_COLOR_INSIDE);
 	setColor(TEXTBOX_COLOR_TEXT);
 	if(c == -1) {
+
+		if(uiCursor->x == 0) {
+			uiCursor->x = boxWidth;
+			uiCursor->y--;
+			termGoto(orig->x + uiCursor->x - 2,orig->y + uiCursor->y); // Move uiCursor to the new location
+		} else uiCursor->x--;
 		termBack();
 		fputs(" ",stdout);
 		termBack();
-	} else { // TODO : add retour à la ligne
+	} else { 
 		printf("%c",c);
-
+		if(uiCursor->x >= boxWidth - 2) { // For right frame
+			uiCursor->x = 0;
+			uiCursor->y++;
+			termGoto(orig->x + uiCursor->x,orig->y + uiCursor->y); // Move uiCursor to the new location
+		} else uiCursor->x++;
 	}
 }
 
@@ -132,7 +144,7 @@ void initUI(Winsize ws) {
 
 }
 
-void swapUIBoxes(int *mode, Vect *boxLatTextSize, Vect *boxMorTextSize, Vect boxRelSize, Winsize ws) {
+void swapUIBoxes(int *mode, Vect *boxLatTextSize, Vect *boxMorTextSize, Vect boxRelSize, Winsize ws, Vect *uiCursor, Vect *orig) { // TODO : refactor gotoTBOrigin pour make things clearer
 
 	// Swap the boxes graphicaly
 	boxLatTextSize = drawTextBox(boxRelSize, boxLatTextSize, mode ? WINDOW2_YPOS : WINDOW1_YPOS, ws,TEXTBOX_TITLE_LATIN);
@@ -142,7 +154,7 @@ void swapUIBoxes(int *mode, Vect *boxLatTextSize, Vect *boxMorTextSize, Vect box
 	*mode = *mode ? 0 : 1;
 
 	// Get to new origin
-	gotoTBOrigin(ws);
+	gotoTBOrigin(ws, uiCursor, orig);
 }
 
 void updateScreen();

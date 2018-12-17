@@ -10,6 +10,7 @@
 #include "include/ui.h"
 #include "include/morse.h"
 
+// TODO : rewrite goto origin taking uiCursor into account
 // TODO : write as long as both aren't full
 // TODO : disclaimer : déparateurs and all
 // TODO add program status indicators etc
@@ -23,7 +24,7 @@
 int main(void) {
 
 	int mode = 0;
-	Vect uiCursor; // TODO init
+	Vect *uiCursor = malloc(sizeof(Vect)); // relative to top box origin 
 	
 	int k;
 
@@ -47,7 +48,9 @@ int main(void) {
 	textBox *latBox = initBox(*boxLatTextSize); 
 	textBox *morBox = initBox(*boxMorTextSize); 
 
-	gotoTBOrigin(ws);
+	Vect *orig = malloc(sizeof(orig));
+	gotoTBOrigin(ws, uiCursor, orig); // sets uiCusor and orig
+	int xorig = uiCursor->x;
 	fflush(stdout); // Flush since smh cache is still tied to newlines
 
 	// Main loop
@@ -57,11 +60,11 @@ int main(void) {
 	while(read(STDIN_FILENO, &c, 1) == 1 && running) {
 
 		if (!iscntrl(c)) { 
-			appendBox(mode ? morBox : latBox, c);
+			appendBox(mode ? morBox : latBox, c, uiCursor, mode ? boxMorTextSize->x : boxLatTextSize->x, orig);
 		} else { // If it is a control character
 			switch(c) {
 				case 127 : 
-					appendBox(mode ? morBox : latBox, c);
+					appendBox(mode ? morBox : latBox, c, uiCursor, mode ? boxMorTextSize->x : boxLatTextSize->x, orig);
 					break;
 				case 20 :
 					// Translate TODO erase lower box to avoid translations piling up on top of each otehr
@@ -72,7 +75,7 @@ int main(void) {
 					break;
 				case 19 :
 					// Switch mode
-					swapUIBoxes(&mode, boxLatTextSize, boxMorTextSize, *boxRelSize, ws);
+					swapUIBoxes(&mode, boxLatTextSize, boxMorTextSize, *boxRelSize, ws, uiCursor, orig);
 					resetTextBoxes(mode, *boxLatTextSize, *boxMorTextSize, morBox, latBox);
 					break;
 				case 17 :

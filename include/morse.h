@@ -13,7 +13,7 @@ textBox *initBox(Vect boxTextSize);
 // Reset boxes when swapping mode
 void resetTextBoxes(int mode, Vect boxLatTextSize, Vect boxMorTextSize, textBox *morBox, textBox *latBox);
 // Append a character to the box (deletes the previous one in case backspace is provided)
-void appendBox(textBox *tBox, char c);
+void appendBox(textBox *tBox, char c, Vect *uiCursor, int boxWidth, Vect *orig);
 
 void lat2Mor(textBox *latBox, textBox *morBox);
 void mor2Lat(textBox *morBox, textBox *latBox);

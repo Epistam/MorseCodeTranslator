@@ -31,17 +31,17 @@ void resetTextBoxes(int mode, Vect boxLatTextSize, Vect boxMorTextSize, textBox 
 
 }
 
-void appendBox(textBox *tBox, char c) {
+void appendBox(textBox *tBox, char c, Vect *uiCursor, int boxWidth, Vect *orig) {
 	if(c == 127) { // Backspace
 		if(tBox->boxCursor > 0) { // Check if there's something to delete
 			tBox->boxStr[tBox->boxCursor - 1] = '\0'; // Delete current char
 			tBox->boxCursor--; // Make cursor fallback
-			appendUIBox(-1);
+			appendUIBox(-1, uiCursor, tBox->boxCursor, boxWidth, orig);
 		}
 	} else if(tBox->boxCursor < tBox->boxStrSize - 2) { // -1 for size to index conversion, and -1 cause cursor is always on the next index
 			tBox->boxStr[tBox->boxCursor] = c;
 			tBox->boxCursor++;
-			appendUIBox(c);
+			appendUIBox(c, uiCursor, tBox->boxCursor, boxWidth, orig);
 	}
 }
 
@@ -181,6 +181,7 @@ void mor2Lat(textBox *morBox, textBox *latBox) {
 	//int curpos=0;
 	char *tok; 
 	char *str = strdup(morBox->boxStr);
+	// Not optimized for shit, a more performance friendly answer would be to use a binary tree, but heck that for now
 	for(i = 0 ; (tok = strsep(&str, " ")) != NULL ; i++) { // morse takes more space than latin so no overflwo check needed
 		if(!strcmp(tok,".-")) strcat(latBox->boxStr,"A");
 		if(!strcmp(tok,"-...")) strcat(latBox->boxStr,"B");
